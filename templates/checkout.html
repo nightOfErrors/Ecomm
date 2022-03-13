@@ -1,0 +1,283 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}" />
+    <title>Cart</title>
+</head>
+
+<body>
+
+
+    <div class="upperNavbar">
+        <div style="display: flex; position: absolute; top: -10px; right: 140px">
+
+
+            {% if request.user.is_authenticated %}
+            <b>
+                <p style="color: #7B7B7B;  font-family: 'Courier New', Courier, monospace; font:100">{{user.username}}
+                </p>
+            </b>
+            {% else %}
+            <b>
+                <p id="signupButton" onclick="checkSignup()"
+                    style="color:white; font-family: 'Courier New', Courier, monospace; font:100; margin-left:50px">
+                    CREATE ACCOUNT</p>
+            </b>
+            {% endif %}
+
+            {% if request.user.is_authenticated %}
+            <b>
+                <a href="{% url 'logitout' %}" style="text-decoration: none ;">
+                    <p style="color:white; font-family: 'Courier New', Courier, monospace; font:100; margin-left:50px">
+                        LOG OUT
+                        <p>
+                </a>
+            </b>
+            {% else %}
+            <b>
+                <p id="loginButton" onclick="checkSignin()"
+                    style="color:white; font-family: 'Courier New', Courier, monospace; font:100; margin-left:50px">LOG
+                    IN</p>
+            </b>
+            {% endif %}
+
+
+        </div>
+    </div>
+    <div class="lowerNavbar">
+        <div style="width:50%; display:flex;">
+            <div style="width:100%; display:flex; position:absolute; top:-7px">
+                <h1 style="margin-left: 100px; font-size:50px">TITLE</h1>
+            </div>
+        </div>
+        <div style="width:40.5%; display:flex">
+            <div style="display:flex; justify-content:space-between; width:100%; margin-top:25px">
+                <b>
+                    <p style="color: #7B7B7B;">HOME</p>
+                </b>
+                <b>
+                    <p style="color: #7B7B7B;">ALL PRODUCTS</p>
+                </b>
+                <b>
+                    <p style="color: #7B7B7B;">CONTACT</p>
+                </b>
+                <b>
+                    <p style="color: #7B7B7B;">CART</p>
+                </b>
+                <b>
+                    <p style="color: #7B7B7B;">USER</p>
+                </b>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex; position:absolute; margin-top:170px; width:95%; height:70%">
+
+        <div id="formDiv" style="border: 2px solid black; margin-top:30px ; height:70%; border:none; width:55%; margin-right:50px; margin-left:50px; box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+        -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);">
+            <form id="shippingForm">
+
+
+
+                <input style="width: 700px; height:45px; margin-left:25px; border:none; margin-top:40px" id="address" name="address"
+                    placeholder="address">
+                <br>
+                <input style="width: 200px; height:45px; border:none; margin-left:25px;" id="zipcode" name="zipcode"
+                    placeholder="zipcode">
+                <br>
+                <input style="width: 200px; height:45px; border:none; margin-left:25px;" id="city" name="city" placeholder="city">
+                <br>
+                <input style="width: 200px; height:45px; border:none; margin-left:25px;" id="state" name="state" placeholder="state">
+                <br>
+                <input style="width: 200px; height:45px; border:none; margin-left:25px;" id="country" name="country"
+                    placeholder="country">
+                <br>
+
+
+                <button type="submit" id="shipSubmitButt"
+                    style="margin-top:75px; margin-right:100px; width:100%; box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+                    -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+                    -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75); height:40px; background-color:black; color:white">Continue</button>
+
+            </form>
+
+        </div>
+
+        <script>
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
+        </script>
+
+        <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+        <script>
+
+            let total = '{{order.get_cart_total}}'
+
+            function paymentFinalization() {
+
+                parameters = {
+
+                    method: "POST",
+                    headers: {
+                        'content-type': 'application/json',
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: JSON.stringify(total)
+
+                }
+
+                let url = /processOrder/
+
+                fetch(url, parameters).then((response) => {
+                    response.json()
+                }).then((data) => {
+                    console.log(data)
+                })
+
+                location.href = "/"
+            }
+
+            paypal.Button.render({
+                // Configure environment
+                env: 'sandbox',
+                client: {
+                    sandbox: 'AcL72r9u0Zz753ayZneIwpNbK_J2K9EmYI4prxImDSZDTM5J1eBztO7zp3q2vDaaeNr6OGS_eXnaoWX2',
+                    production: 'demo_production_client_id'
+                },
+                // Customize button (optional)
+                locale: 'en_US',
+                style: {
+                    size: 'large',
+                    color: 'gold',
+                    shape: 'pill',
+                },
+
+                // Enable Pay Now checkout flow (optional)
+                commit: true,
+
+                // Set up a payment
+                payment: function (data, actions) {
+                    return actions.payment.create({
+                        transactions: [{
+                            amount: {
+                                total: total,
+                                currency: 'USD'
+                            }
+                        }]
+                    });
+                },
+                // Execute the payment
+                onAuthorize: function (data, actions) {
+                    return actions.payment.execute().then(function () {
+                        // Show a confirmation message to the buyer
+                        window.alert('Thank you for your purchase!');
+                        paymentFinalization()
+                    });
+                }
+
+            }, '#paypal-button');
+
+
+        </script>
+
+        <script>
+
+            shipButt = document.getElementById("shipSubmitButt")
+            shipButt.addEventListener('click', (e) => {
+
+                e.preventDefault()
+
+                data = {
+                    address: document.getElementById("address").value,
+                    zipcode: document.getElementById("zipcode").value,
+                    city: document.getElementById("city").value,
+                    state: document.getElementById("state").value,
+                    country: document.getElementById("country").value
+                }
+
+                parameters = {
+
+                    method: "POST",
+                    headers: {
+                        'content-type': 'application/json',
+                        'X-CSRFToken': csrftoken,
+                    },
+                    body: JSON.stringify(data)
+
+                }
+
+                let url = /updateAddress/
+
+                fetch(url, parameters).then((response) => {
+                    return response.json()
+                }).then((data) => {
+                    //console.log(data)
+                    formDisplay = document.getElementById("shippingForm")
+                    formDisplay.display = "none";
+
+                    addressDisplay = document.getElementById("formDiv")
+                    addressDisplay.innerHTML = data.address
+
+                    //    document.getElementById("paymetItButton").disabled = false
+
+
+                })
+
+            })
+
+
+        </script>
+
+        <div style="border: 2px solid #848884; border-radius:10px; height:90%; margin-right:50px; margin-left:50px; padding-right:30px; padding-left:15px">
+            <b><h2 style="font-family: monospace;" >Your Items : </h2></b><br />
+
+            {% for item in items %}
+
+            <div style="width: 100%; margin-top:8px; height: 50px; border: none; padding-left:7px; padding-right:7px; display:flex; justify-content:space-between; box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+            -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
+            -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);">
+                <b><p style="font-family: monospace; margin-top:17px">{{item.product.name}}</p></b>
+                <b><p style="font-family: monospace; margin-top:17px">{{item.quantity}}</p></b>
+                <b><p style="font-family: monospace; margin-top:17px">₹ {{item.product.price}}</p></b>
+            </div>
+
+            {% endfor %}
+
+            <div style="display:flex">
+                <b><p style="font-size:16px; font-family: monospace; color:green">Total : </p></b>
+                <b><p style="margin-top:15px; margin-left:7px; font-size:18px; color:green; font-family: monospace;">{{order.get_cart_total}}</p></b>
+            </div>
+            <!-- <button disabled id="paymetItButton" style="margin-top:50px; margin-right:100px; width:100%;">Move To Payment</button> -->
+
+            <div style="margin-top:50px" id="paypal-button"></div>
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

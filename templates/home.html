@@ -1,0 +1,337 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <script src="{% static 'js/home.js' %}"></script>
+    <title>Home</title>
+</head>
+
+<body>
+
+    <!-- siginIN -->
+
+    <div style="display: none; z-index: 10; top: 70px; width: 400px; height: 600px; background-color: white; position: absolute; left: 50%; transform: translate(-50%, 0); border-radius: 15px;"
+        id="sigininMod">
+
+        <div align="center" style="margin-top:100px">
+
+            <h1
+                style="color:black ;font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                Login</h1>
+
+            <form style="margin-top: 20px;" action="/loginit" method="POST">
+
+                {% csrf_token %}
+
+                <input style="width: 70%; height:27px; border-radius:15px 15px 0px 0px" name="username"
+                    placeholder="username..." /><br />
+                <input type="password" style="width: 70%; height:27px" name="password"
+                    placeholder="password..." /><br />
+                <button id="signinButton" type="submit">SignIn</button>
+
+
+            </form>
+        </div>
+
+        <!-- <hr />
+
+        <button>SiginIn With Google</button> -->
+
+    </div>
+
+    <div onclick="closeSignin()"
+        style="width:100vw; display:none; height:100vh; background-color: black; position:absolute; top:0px; left:0px; z-index: 9; opacity:0.8"
+        id="loginDialogue">
+
+    </div>
+
+    <!-- signUP -->
+
+    <div style="display: none; z-index: 10; top: 70px; width: 400px; height: 600px; background-color: white; position: absolute; left: 50%; transform: translate(-50%, 0); border-radius: 15px;"
+        id="sigupMod">
+
+        <div align="center" style="margin-top:100px">
+
+            <h1
+                style="color:black ;font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                Signup</h1>
+
+            <form style="margin-top: 20px;" action="/" method="POST">
+
+                {% csrf_token %}
+
+                <input style="width: 70%; height:27px; border-radius:15px 15px 0px 0px" type="text"
+                    placeholder="username..." {{userform.username}}<br />
+                <input style="width: 70%; height:27px" type="email" placeholder="email..." {{userform.email}}<br />
+                <input style="width: 70%; height:27px" type="password" placeholder="password..."
+                    {{userform.password1}}<br />
+                <input style="width: 70%; height:27px" type="password" placeholder="confirm password..."
+                    {{userform.password2}}<br />
+
+                <button id="signupButtonForm" type="submit">SignUp</button>
+            </form>
+
+        </div>
+
+        <!-- <hr />
+
+        <button>SiginUp With Google</button> -->
+
+    </div>
+
+    <div onclick="closeSignup()"
+        style="width:100vw; display:none; height:100vh; background-color: black; position:absolute; top:0px; left:0px; z-index: 9; opacity:0.8"
+        id="signupDialogue">
+
+    </div>
+
+    <div class="upperNavbar">
+        <div style="display: flex; position: absolute; top: -10px; right: 140px">
+
+
+            {% if request.user.is_authenticated %}
+            <b>
+                <p style="color: #7B7B7B;  font-family: 'Courier New', Courier, monospace; font:100">{{user.username}}
+                </p>
+            </b>
+            {% else %}
+            <b>
+                <p id="signupButton" onclick="checkSignup()"
+                    style="color:white; font-family: 'Courier New', Courier, monospace; font:100; margin-left:50px">
+                    CREATE ACCOUNT</p>
+            </b>
+            {% endif %}
+
+            {% if request.user.is_authenticated %}
+            <b>
+                <a href="{% url 'logitout' %}" style="text-decoration: none ;">
+                    <p style="color:white; font-family: 'Courier New', Courier, monospace; font:100; margin-left:50px">
+                        LOG OUT
+                        <p>
+                </a>
+            </b>
+            {% else %}
+            <b>
+                <p id="loginButton" onclick="checkSignin()"
+                    style="color:white; font-family: 'Courier New', Courier, monospace; font:100; margin-left:50px">LOG
+                    IN</p>
+            </b>
+            {% endif %}
+
+
+        </div>
+    </div>
+    <div class="lowerNavbar">
+        <div style="width:50%; display:flex;">
+            <div style="width:100%; display:flex; position:absolute; top:-7px">
+                <h1 style="margin-left: 100px; font-size:50px">TITLE</h1>
+            </div>
+        </div>
+        <div style="width:50%; z-index:1;">
+            <div style="display:flex; justify-content:space-between;margin-right:140px; margin-top:25px">
+                <b>
+                    <p style="color: #7B7B7B;">HOME</p>
+                </b>
+                <b>
+                    <p style="color: #7B7B7B;">ALL PRODUCTS</p>
+                </b>
+                <b id="contactId">
+                    <p id="innerContactId" style="color: #7B7B7B;">CONTACT</p>
+                </b>
+                <b>
+                    <p style="color: #7B7B7B;">ORDERS</p>
+                </b>
+                <a href="{% url 'cart' %}" style="text-decoration: none;">
+                    <b style="display: flex;">
+                        <p style="color: #7B7B7B">CART
+                        <div
+                            style=" width:30px; height:20px; margin-top:15px; border-radius:0px 5px 5px 0px; background-color:orange">
+                            <p id="inCartNumber" style="margin-top: -0px; color:white; margin-left:5px"></p>
+                        </div>
+                        </p>
+                    </b>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="contactData" style="border:3px solid #7B7B7B; display:none; height:110px; width: 70%; position:absolute; left:25%; top:140px; z-index:1; background-color:white; box-shadow: 0px 9px 13px 0px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 0px 9px 13px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 9px 13px 0px rgba(0,0,0,0.75);">
+
+        <div style="margin-left:20%">
+            <b>
+                <p style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">Address : k-71,
+                    12th Floor, Doofischmurff Cooporation, Sector-71, Jaipur, Rajasthan, India</p>
+            </b>
+        </div>
+        <div style="display: flex; justify-content:space-around">
+            <b>
+                <p style="color: #7B7B7B; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+                    First Contact No : 989*****54 </p>
+            </b>
+            <b>
+                <p style="color: #7B7B7B; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+                    Second Contact No : 879*****45 </p>
+            </b>
+            <b>
+                <p style="color: #7B7B7B; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+                    Third Contact No : 954*****17 </p>
+            </b>
+        </div>
+
+    </div>
+
+    {% if request.user.is_authenticated %}
+
+    <div style="display: none;"></div>
+
+    {% else %}
+
+    <div style="border:3px solid #7B7B7B ; height:60px; width: 30%; position:fixed; justify-content:center; left:35%; top:300px; z-index:1; background-color:white; box-shadow: 0px 0px 22px 11px rgba(0,0,0,0.75);
+        -webkit-box-shadow: 0px 0px 22px 11px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 0px 22px 11px rgba(0,0,0,0.75);">
+        <div style="border: 2px solid #7B7B7B; background-color:black ;width: 30px; height:30px; border-radius:25px">
+            <b>
+                <p style="color: white; margin-left:9px; margin-bottom:40px">X</p>
+            </b>
+        </div>
+        <h4 style="color: #7B7B7B; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Please
+            Create An Account</h4>
+    </div>
+
+    {% endif %}
+
+    <script>
+
+        let handler = false;
+
+        let element = document.getElementById("contactId");
+        element.addEventListener('click', () => {
+
+            if (handler == false) {
+
+                handler = true;
+                let stylesContact = document.getElementById("innerContactId");
+                stylesContact.style.fontSize = "18px";
+
+                document.getElementById('contactData').style.display = "block";
+
+            }
+            else if (handler == true) {
+                let stylesContact = document.getElementById("innerContactId");
+                handler = false;
+                stylesContact.style.fontSize = "16px";
+
+                document.getElementById('contactData').style.display = "none";
+
+
+            }
+
+
+        })
+
+
+    </script>
+
+    <div class="imageSlide" style=" position:absolute; left:0px; width:100%; top:144px; height:400px; ">
+        <div style="height:50%">
+            <div style="margin-left:110px; margin-top: 75px;">
+                <p
+                    style="color: white; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; font-size:30px ">
+                    New Knowtow</p>
+                <u style="color: white;">
+                    <p style="font-size:21px; color:white; margin-top:-22px">Show now</p>
+                </u>
+            </div>
+        </div>
+        <div style="height:50%;">
+            <div class="downArrow"><img
+                    style="width: 25px; height: 25px; transform: translate(-50%, 0); left: 50%; position:absolute; margin-top:10px"
+                    src="{% static 'downarrow.png' %}" /></div>
+        </div>
+    </div>
+
+    <!-- products -->
+
+    <div class="items">
+        <div class="heading">
+            <h1 style="transform: translate(-50%, 0); left: 50%; color:#6F6F6F; position:absolute; margin-top:-12px">
+                Featured Products</h1>
+        </div>
+
+        <div class="products">
+
+            {% for product in products %}
+
+            <div class="product">
+                <div class="inProduct" style="background-image: url('{{ product.pic.url }}');">
+                    <h3 style="color: white; margin-left: 20px; margin-right: 20px">{{product.name}}</h3>
+                    <h5 style="color: white; margin-left: 20px; margin-right: 20px; margin-top: -15px">Rs.
+                        {{product.price}}</h5>
+                    <!-- <button class="viewButton">View</button>                     -->
+                    <a href="{% url 'product' product.id %}">
+                        <button class="viewButton">
+                            <b>
+                                <p style="margin-top: 8px; color:white">VIEW</p>
+                            </b>
+                        </button>
+                    </a>
+                </div>
+
+                <button data-product={{product.id}} class="bagButton">
+                    <b>
+                        <p style="margin-top: 8px; color:red">Add To Cart</p>
+                    </b>
+                </button>
+
+            </div>
+
+            {% endfor %}
+
+            <!-- <script>
+                let products = document.getElementsByClassName('bagButton')
+                console.log(products.length)
+            </script> -->
+
+        </div>
+    </div>
+
+    <footer class="fotter">
+        <h3 style="position: absolute; transform: translate(-50%, 0); left: 50%; color:white">Credits</h3>
+        <p style="color: white; margin-top:50px; margin-left:100px; margin-right:100px">Lorem ipsum dolor sit amet
+            consectetur adipisicing elit. Accusamus animi vero corporis, recusandae voluptatem dolore cumque deleniti
+            itaque quo magni nisi quasi repellendus et ad voluptatibus placeat rerum repudiandae eligendi!</p>
+    </footer>
+
+
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+    </script>
+
+
+    <script src="{% static 'js/cart.js' %}"></script>
+</body>
+
+</html>
