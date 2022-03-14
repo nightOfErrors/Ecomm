@@ -56,23 +56,32 @@
                 <h1 style="margin-left: 100px; font-size:50px">TITLE</h1>
             </div>
         </div>
-        <div style="width:40.5%; display:flex">
-            <div style="display:flex; justify-content:space-between; width:100%; margin-top:25px">
-                <b>
-                    <p style="color: #7B7B7B;">HOME</p>
-                </b>
+        <div style="width:50%; z-index:1;">
+            <div style="display:flex; justify-content:space-between;margin-right:140px; margin-top:25px">
+                <a style="text-decoration:none" href="{% url 'home' %}">
+                    <b>
+                        <p style="color: #7B7B7B;">HOME</p>
+                    </b>
+                </a>
                 <b>
                     <p style="color: #7B7B7B;">ALL PRODUCTS</p>
                 </b>
-                <b>
-                    <p style="color: #7B7B7B;">CONTACT</p>
+                <b id="contactId">
+                    <p id="innerContactId" style="color: #7B7B7B;">CONTACT</p>
                 </b>
-                <b>
-                    <p style="color: #7B7B7B;">CART</p>
-                </b>
-                <b>
-                    <p style="color: #7B7B7B;">USER</p>
-                </b>
+                {% comment %} <b>
+                    <p style="color: #7B7B7B;">ORDERS</p>
+                </b> {% endcomment %}
+                <a href="{% url 'cart' %}" style="text-decoration: none;">
+                    <b style="display: flex;">
+                        <p style="color: #7B7B7B">CART
+                        <div
+                            style=" width:30px; height:20px; margin-top:15px; border-radius:0px 5px 5px 0px; background-color:orange">
+                            <p id="inCartNumber" style="margin-top: -0px; color:white; margin-left:5px"></p>
+                        </div>
+                        </p>
+                    </b>
+                </a>
             </div>
         </div>
     </div>
@@ -238,8 +247,17 @@
                     formDisplay.display = "none";
 
                     addressDisplay = document.getElementById("formDiv")
-                    addressDisplay.innerHTML = data.address
-
+                    addressDisplay.innerHTML = `<div style="margin-top:70px; margin-left:50px; margin-right:50px">
+                        <b><p style="font-size:23px; font-family: monospace">YOUR ADDRESS:</p></b>
+                        <b><p style="font-family: monospace; font-size:18px; margin-top:20px">
+                            ${data.address}<br />
+                            ${data.city}<br />
+                            ${data.state}<br />
+                            ${data.zipcode}<br />
+                            ${data.country}
+                        </p></b>
+                    </div>`
+                    //data.address
                     //    document.getElementById("paymetItButton").disabled = false
 
 

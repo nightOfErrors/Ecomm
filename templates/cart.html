@@ -58,19 +58,21 @@
         </div>
         <div style="width:50%; z-index:1;">
             <div style="display:flex; justify-content:space-between;margin-right:140px; margin-top:25px">
-                <b>
-                    <p style="color: #7B7B7B;">HOME</p>
-                </b>
+                <a style="text-decoration:none" href="{% url 'home' %}">
+                    <b>
+                        <p style="color: #7B7B7B;">HOME</p>
+                    </b>
+                </a>
                 <b>
                     <p style="color: #7B7B7B;">ALL PRODUCTS</p>
                 </b>
-                <b>
-                    <p style="color: #7B7B7B;">CONTACT</p>
+                <b id="contactId">
+                    <p id="innerContactId" style="color: #7B7B7B;">CONTACT</p>
                 </b>
-                <b>
+                {% comment %} <b>
                     <p style="color: #7B7B7B;">ORDERS</p>
-                </b>
-                <a style="text-decoration: none;">
+                </b> {% endcomment %}
+                <a href="{% url 'cart' %}" style="text-decoration: none;">
                     <b style="display: flex;">
                         <p style="color: #7B7B7B">CART
                         <div

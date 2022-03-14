@@ -22,10 +22,9 @@
 }
 
 
-
 .imageSlide {
 
-    background-image: url('https://source.unsplash.com/1600x400/?men,model');
+    /* background-image: url('https://source.unsplash.com/1600x400/?men,model'); */
     background-size: cover;
 
 }
@@ -42,6 +41,15 @@
     transform: translate(-50%, 0);
     margin-top: 15px;
 
+}
+
+.dots {
+    width: 12px;;
+    height: 12px;
+    border-radius: 20px;
+    background-color: black;
+    opacity: 0.5;
+    margin: 5px;
 }
 
 .items {

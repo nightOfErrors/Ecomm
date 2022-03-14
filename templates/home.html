@@ -40,7 +40,7 @@
         </div>
 
         <!-- <hr />
-
+            this
         <button>SiginIn With Google</button> -->
 
     </div>
@@ -135,18 +135,20 @@
         </div>
         <div style="width:50%; z-index:1;">
             <div style="display:flex; justify-content:space-between;margin-right:140px; margin-top:25px">
-                <b>
-                    <p style="color: #7B7B7B;">HOME</p>
-                </b>
+                <a style="text-decoration:none" href="{% url 'home' %}">
+                    <b>
+                        <p style="color: #7B7B7B;">HOME</p>
+                    </b>
+                </a>
                 <b>
                     <p style="color: #7B7B7B;">ALL PRODUCTS</p>
                 </b>
                 <b id="contactId">
                     <p id="innerContactId" style="color: #7B7B7B;">CONTACT</p>
                 </b>
-                <b>
+                {% comment %} <b>
                     <p style="color: #7B7B7B;">ORDERS</p>
-                </b>
+                </b> {% endcomment %}
                 <a href="{% url 'cart' %}" style="text-decoration: none;">
                     <b style="display: flex;">
                         <p style="color: #7B7B7B">CART
@@ -240,7 +242,7 @@
 
     </script>
 
-    <div class="imageSlide" style=" position:absolute; left:0px; width:100%; top:144px; height:400px; ">
+    <div class="imageSlide" id="imageSlider" style=" position:absolute; left:0px; width:100%; top:144px; height:400px; ">
         <div style="height:50%">
             <div style="margin-left:110px; margin-top: 75px;">
                 <p
@@ -251,18 +253,81 @@
                 </u>
             </div>
         </div>
+        <div style="width:100%; display:flex; justify-content:space-between; position:absolute; top:105px">
+            <div onclick="leftClicked()" id="leftSlideButton" style="width:50px; border-radius:5px; height:200px; background-color:black; margin-left:10px; opacity:0.5"><img style="width: 25px; height: 25px; margin-left:8px; margin-top:80px" src="{% static 'leftarrow.png' %}" /></div>
+            <div onclick="rightClicked()" id="rightSlideButton" style="width:50px; border-radius:5px; height:200px; background-color:black; margin-right:10px; opacity:0.5"><img style="width: 25px; height: 25px; margin-left:12px; margin-top:80px" src="{% static 'rightarrow.png' %}" /></div>
+        </div>
         <div style="height:50%;">
-            <div class="downArrow"><img
+            <div class="downArrow">
+                <img
                     style="width: 25px; height: 25px; transform: translate(-50%, 0); left: 50%; position:absolute; margin-top:10px"
-                    src="{% static 'downarrow.png' %}" /></div>
+                    src="{% static 'downarrow.png' %}" />
+            </div>
+            <div id="dotContainer" style="display:flex; transform: translate(-50%, 0); left: 50%; position:absolute; margin-top:135px">
+                <div id="firstDot" class="dots"></div>
+                <div id="secondDot" class="dots"></div>
+                <div id="thirdDot" class="dots"></div>
+            </div>
+
         </div>
     </div>
+
+    <script>
+
+        let slideNumber = 1;
+        slideEelement = document.getElementById('imageSlider');
+
+        let slideImages = ['https://source.unsplash.com/1600x400/?men,model', 'https://source.unsplash.com/1600x400/?women,model', 'https://source.unsplash.com/1600x400/?guy,model']
+        
+        slideEelement.style.backgroundImage = `url(${slideImages[slideNumber]})`;
+
+        let dotChanger = document.getElementsByClassName("dots");
+        dotChanger[slideNumber].style.opacity = 1;
+
+        function leftClicked(){
+        
+            slideNumber = slideNumber - 1;
+
+            if(slideNumber < 0){
+                slideNumber = 0;
+            }
+            
+            console.log(slideNumber)
+            console.log(slideImages[slideNumber])
+
+            slideEelement.style.backgroundImage = `url(${slideImages[slideNumber]})`;
+
+            dotChanger[slideNumber+1].style.opacity = 0.5;
+            dotChanger[slideNumber].style.opacity = 1;
+            
+        }
+
+        function rightClicked(){
+            
+            slideNumber = slideNumber + 1;
+
+            if(slideNumber > 2){
+                slideNumber = 2;
+            }
+            
+            console.log(slideNumber)
+            console.log(slideImages[slideNumber])
+
+            slideEelement.style.backgroundImage = `url(${slideImages[slideNumber]})`;
+
+            dotChanger[slideNumber-1].style.opacity = 0.5;
+            dotChanger[slideNumber].style.opacity = 1;
+            
+        }
+
+
+    </script>
 
     <!-- products -->
 
     <div class="items">
         <div class="heading">
-            <h1 style="transform: translate(-50%, 0); left: 50%; color:#6F6F6F; position:absolute; margin-top:-12px">
+            <h1 style="transform: translate(-50%, 0); left: 50%; color:#6F6F6F; position:absolute; margin-top:-2px">
                 Featured Products</h1>
         </div>
 
