@@ -22,6 +22,14 @@ def home(request):
     return render(request, "home.html", {'products':products, 'userform':userform} )
 
 
+def allproducts(request):
+
+    products = Product.objects.all()
+
+    return render(request, "allproducts.html", {'products':products})
+
+
+
 def loginit(request):
 
     if request.method == "POST":

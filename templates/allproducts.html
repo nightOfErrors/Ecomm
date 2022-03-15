@@ -14,6 +14,192 @@
 
 <body>
 
+    <div class="upperNavbar">
+        <div style="display: flex; position: absolute; top: -10px; right: 140px">
+
+
+            {% if request.user.is_authenticated %}
+            <b>
+                <p style="color: #7B7B7B;  font-family: 'Courier New', Courier, monospace; font:100">{{user.username}}
+                </p>
+            </b>
+            {% else %}
+            <b>
+                <p id="signupButton" onclick="checkSignup()"
+                    style="color:white; font-family: 'Courier New', Courier, monospace; font:100; margin-left:50px">
+                    CREATE ACCOUNT</p>
+            </b>
+            {% endif %}
+
+            {% if request.user.is_authenticated %}
+            <b>
+                <a href="{% url 'logitout' %}" style="text-decoration: none ;">
+                    <p style="color:white; font-family: 'Courier New', Courier, monospace; font:100; margin-left:50px">
+                        LOG OUT
+                        <p>
+                </a>
+            </b>
+            {% else %}
+            <b>
+                <p id="loginButton" onclick="checkSignin()"
+                    style="color:white; font-family: 'Courier New', Courier, monospace; font:100; margin-left:50px">LOG
+                    IN</p>
+            </b>
+            {% endif %}
+
+
+        </div>
+    </div>
+    <div class="lowerNavbar">
+        <div style="width:50%; display:flex;">
+            <div style="width:100%; display:flex; position:absolute; top:-7px">
+                <h1 style="margin-left: 100px; font-size:50px">TITLE</h1>
+            </div>
+        </div>
+        <div style="width:50%; z-index:1;">
+            <div style="display:flex; justify-content:space-between;margin-right:140px; margin-top:25px">
+                <a style="text-decoration:none" href="{% url 'home' %}">
+                    <b>
+                        <p style="color: #7B7B7B;">HOME</p>
+                    </b>
+                </a>
+                <a style="text-decoration: none;" href="{% url 'allproducts' %}">
+                    <b>
+                        <p style="color: #7B7B7B;">ALL PRODUCTS</p>
+                    </b>
+                </a>
+                <b id="contactId">
+                    <p id="innerContactId" style="color: #7B7B7B;">CONTACT</p>
+                </b>
+                {% comment %} <b>
+                    <p style="color: #7B7B7B;">ORDERS</p>
+                </b> {% endcomment %}
+                <a href="{% url 'cart' %}" style="text-decoration: none;">
+                    <b style="display: flex;">
+                        <p style="color: #7B7B7B">CART
+                        <div
+                            style=" width:30px; height:20px; margin-top:15px; border-radius:0px 5px 5px 0px; background-color:orange">
+                            <p id="inCartNumber" style="margin-top: -0px; color:white; margin-left:5px"></p>
+                        </div>
+                        </p>
+                    </b>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="contactData" style="border:3px solid #7B7B7B; display:none; height:110px; width: 70%; position:absolute; left:25%; top:140px; z-index:1; background-color:white; box-shadow: 0px 9px 13px 0px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 0px 9px 13px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 9px 13px 0px rgba(0,0,0,0.75);">
+
+        <div style="margin-left:20%">
+            <b>
+                <p style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">Address : k-71,
+                    12th Floor, Doofischmurff Cooporation, Sector-71, Jaipur, Rajasthan, India</p>
+            </b>
+        </div>
+        <div style="display: flex; justify-content:space-around">
+            <b>
+                <p style="color: #7B7B7B; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+                    First Contact No : 989*****54 </p>
+            </b>
+            <b>
+                <p style="color: #7B7B7B; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+                    Second Contact No : 879*****45 </p>
+            </b>
+            <b>
+                <p style="color: #7B7B7B; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+                    Third Contact No : 954*****17 </p>
+            </b>
+        </div>
+
+    </div>
+
+    <script>
+
+        let handler = false;
+
+        let element = document.getElementById("contactId");
+        element.addEventListener('click', () => {
+
+            if (handler == false) {
+
+                handler = true;
+                let stylesContact = document.getElementById("innerContactId");
+                stylesContact.style.fontSize = "18px";
+
+                document.getElementById('contactData').style.display = "block";
+
+            }
+            else if (handler == true) {
+                let stylesContact = document.getElementById("innerContactId");
+                handler = false;
+                stylesContact.style.fontSize = "16px";
+
+                document.getElementById('contactData').style.display = "none";
+
+
+            }
+
+
+        })
+
+
+    </script>
+
+
+    
+    <div style="width: 100%; margin-top: 170px;">
+        <div class="heading">
+            <h1 style="transform: translate(-50%, 0); left: 50%; color:#6F6F6F; position:absolute; margin-top:-2px">
+                All Products</h1>
+        </div>
+
+        <div style="margin-top:20px" class="products">
+
+            {% for product in products %}
+
+            <div class="product">
+                <div class="inProduct" style="background-image: url('{{ product.pic.url }}');">
+                    <h3 style="color: white; margin-left: 20px; margin-right: 20px">{{product.name}}</h3>
+                    <h5 style="color: white; margin-left: 20px; margin-right: 20px; margin-top: -15px">Rs.
+                        {{product.price}}</h5>
+                    <!-- <button class="viewButton">View</button>                     -->
+                    <a href="{% url 'product' product.id %}">
+                        <button class="viewButton">
+                            <b>
+                                <p style="margin-top: 8px; color:white">VIEW</p>
+                            </b>
+                        </button>
+                    </a>
+                </div>
+
+                <button data-product={{product.id}} class="bagButton">
+                    <b>
+                        <p style="margin-top: 8px; color:red">Add To Cart</p>
+                    </b>
+                </button>
+
+            </div>
+
+            {% endfor %}
+
+            <!-- <script>
+                let products = document.getElementsByClassName('bagButton')
+                console.log(products.length)
+            </script> -->
+
+        </div>
+    </div>
+
+    <footer class="fotter">
+        <h3 style="position: absolute; transform: translate(-50%, 0); left: 50%; color:white">Credits</h3>
+        <p style="color: white; margin-top:50px; margin-left:100px; margin-right:100px">Lorem ipsum dolor sit amet
+            consectetur adipisicing elit. Accusamus animi vero corporis, recusandae voluptatem dolore cumque deleniti
+            itaque quo magni nisi quasi repellendus et ad voluptatibus placeat rerum repudiandae eligendi!</p>
+    </footer>
+
     
 
 </body>

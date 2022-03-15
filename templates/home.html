@@ -140,9 +140,11 @@
                         <p style="color: #7B7B7B;">HOME</p>
                     </b>
                 </a>
-                <b>
-                    <p style="color: #7B7B7B;">ALL PRODUCTS</p>
-                </b>
+                <a style="text-decoration: none;" href="{% url 'allproducts' %}">
+                    <b>
+                        <p style="color: #7B7B7B;">ALL PRODUCTS</p>
+                    </b>
+                </a>
                 <b id="contactId">
                     <p id="innerContactId" style="color: #7B7B7B;">CONTACT</p>
                 </b>
@@ -196,16 +198,16 @@
 
     {% else %}
 
-    <div style="border:3px solid #7B7B7B ; height:60px; width: 30%; position:fixed; justify-content:center; left:35%; top:300px; z-index:1; background-color:white; box-shadow: 0px 0px 22px 11px rgba(0,0,0,0.75);
+    <div style="border:3px solid #7B7B7B ; height:120px; width: 30%; position:fixed; justify-content:center; left:35%; top:300px; z-index:1; background-color:white; box-shadow: 0px 0px 22px 11px rgba(0,0,0,0.75);
         -webkit-box-shadow: 0px 0px 22px 11px rgba(0,0,0,0.75);
         -moz-box-shadow: 0px 0px 22px 11px rgba(0,0,0,0.75);">
-        <div style="border: 2px solid #7B7B7B; background-color:black ;width: 30px; height:30px; border-radius:25px">
+        {% comment %} <div style="border: 2px solid #7B7B7B; background-color:black ;width: 30px; height:30px; border-radius:25px">
             <b>
-                <p style="color: white; margin-left:9px; margin-bottom:40px">X</p>
+                <p style="color: white; margin-left:9px; margin-top:5px">X</p>
             </b>
-        </div>
-        <h4 style="color: #7B7B7B; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">Please
-            Create An Account</h4>
+        </div> {% endcomment %}
+        <h4 style="color: #7B7B7B; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; margin-left:20px; margin-right:15px">Please
+            Create An Account To Access Cart And Get Full View Access.</h4>
     </div>
 
     {% endif %}
@@ -241,7 +243,7 @@
 
 
     </script>
-
+      
     <div class="imageSlide" id="imageSlider" style=" position:absolute; left:0px; width:100%; top:144px; height:400px; ">
         <div style="height:50%">
             <div style="margin-left:110px; margin-top: 75px;">
